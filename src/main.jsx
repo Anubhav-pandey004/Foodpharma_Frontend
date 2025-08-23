@@ -13,6 +13,8 @@ import { store } from './store/store.jsx'
 import Login from './Pages/Login.jsx';
 import Signup from './Pages/Signup.jsx';
 import Home from './Pages/Home.jsx';
+import Scan from './Pages/Scan.jsx';
+import Result from './components/Result.jsx';
 
 
 const router = createBrowserRouter([
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path:"signup",
         element:<Signup/>
+      },
+      {
+        path:"scan",
+        element:<Scan/>
+      },
+      {
+        path:"result",
+        element:<Result/>
       },
       {
         path:"*",

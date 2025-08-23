@@ -8,6 +8,7 @@ import { setUserDetails } from "./store/userSlice";
 import Context from "./Context/context";
 import PWABadge from "./PWABadge.jsx";
 import "./App.css";
+import Header from "./components/Header.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +33,8 @@ function App() {
     <>
       <Context.Provider value={{ fetchUserDetails }}>
         <ToastContainer position="top-center" />
-        <main className="scrollbar-none">
+        <main className=" bg-[#f8f9fa] scrollbar-none overflow-y-auto">
+          <Header/>
           <Outlet />
         </main>
       </Context.Provider>

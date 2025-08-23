@@ -39,8 +39,8 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-            <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
+        <div className="min-h-screen flex items-center justify-center text-white">
+            <div className="w-[90%] max-w-md p-8 space-y-6 bg-[#dde5b6] border-[1px] border-[#7a9f0c] shadow-2xl backdrop-blur-md rounded-lg text-[#132a13]">
                 <h2 className="text-3xl font-semibold text-center">Sign Up</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -49,7 +49,7 @@ const Signup = () => {
                         <label className="block mb-1">Username</label>
                         <input
                             {...register('username', { required: 'Username is required' })}
-                            className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
                         {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
                     </div>
@@ -60,7 +60,7 @@ const Signup = () => {
                         <input
                             type="email"
                             {...register('email', { required: 'Email is required' })}
-                            className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
@@ -72,7 +72,7 @@ const Signup = () => {
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
-                                className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                             />
                             <button
                                 type="button"
@@ -91,7 +91,7 @@ const Signup = () => {
                         <input
                             type="password"
                             {...register('confirmPassword', { required: 'Please confirm your password' })}
-                            className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
                         {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
                     </div>
@@ -99,14 +99,14 @@ const Signup = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-white"
+                        className="w-full bg-gradient-to-br from-[#b5e48c] to-[#73a942] cursor-pointer text-[#132a13] px-6 py-2 rounded-lg transition-all duration-200 font-medium"
                     >
                         Sign Up
                     </button>
 
                     {/* Already have an account? */}
                     <p className="text-center text-gray-400">
-                        Already have an account? <a onClick={() => navigate('/login')} className="text-blue-400 cursor-pointer">Login</a>
+                        Already have an account? <a onClick={() => navigate('/login')} className="text-[#132a13] cursor-pointer">Login</a>
                     </p>
                 </form>
             </div>

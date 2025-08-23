@@ -32,13 +32,13 @@ const Login = () => {
         }
         if(data.error)
         {
-          toast.error(data.message?.message)
+          toast.error(data.message)
         }
       };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-            <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
+        <div className="min-h-screen flex items-center justify-center text-white">
+            <div className="w-[90%] max-w-md p-8 space-y-6 bg-[#dde5b6] border-[1px] border-[#7a9f0c] shadow-2xl backdrop-blur-md rounded-lg text-[#132a13]">
                 <h2 className="text-3xl font-semibold text-center">Login</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -50,7 +50,7 @@ const Login = () => {
                         <input
                             type="email"
                             {...register('email', { required: 'Email is required' })}
-                            className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                            className="w-full text-[#f8f9fa] p-3 rounded-lg bg-[#31572c] "
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
@@ -62,7 +62,7 @@ const Login = () => {
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 {...register('password', { required: 'Password is required', minLength: 6 })}
-                                className="w-full p-3 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                                className="w-full text-[#f8f9fa] p-3 rounded-lg bg-[#31572c] "
                             />
                             <button
                                 type="button"
@@ -78,14 +78,14 @@ const Login = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-white"
+                        className="w-full bg-gradient-to-br from-[#b5e48c] to-[#73a942] cursor-pointer text-[#132a13] px-6 py-2 rounded-lg transition-all duration-200 font-medium"
                     >
                         Login
                     </button>
 
                     {/* No Account? */}
                     <p className="text-center text-gray-400">
-                        Don't have an account? <a onClick={()=>navigate("/signup")} className="text-blue-400 cursor-pointer">Sign Up</a>
+                        Don't have an account? <a onClick={()=>navigate("/signup")} className="text-[#132a13] cursor-pointer">Sign Up</a>
                     </p>
                 </form>
             </div>
