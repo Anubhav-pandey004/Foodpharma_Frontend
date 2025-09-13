@@ -1,6 +1,9 @@
 
 
-const backendDomain = import.meta.env.VITE_BACKEND_URL || "https://food-pharma-backend.onrender.com"
+// const backendDomain = import.meta.env.VITE_BACKEND_URL || "https://food-pharma-backend.onrender.com"
+
+
+const backendDomain = "https://food-pharma-backend.onrender.com"
 // const backendDomain = "https://foodpharma-backend.onrender.com"
 
 const SummaryApi ={
