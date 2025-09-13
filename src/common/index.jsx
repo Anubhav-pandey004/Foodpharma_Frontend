@@ -1,6 +1,6 @@
 
 
-const backendDomain = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+const backendDomain = import.meta.env.VITE_BACKEND_URL || "https://food-pharma-backend.netlify.app/"
 // const backendDomain = "https://foodpharma-backend.onrender.com"
 
 const SummaryApi ={
