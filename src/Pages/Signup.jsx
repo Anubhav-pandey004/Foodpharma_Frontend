@@ -8,33 +8,42 @@ import { toast } from 'react-toastify';
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const onSubmit = async (data) => {
-        if (data.password !== data.confirmPassword) {
+    const onSubmit = async (form) => {
+        if ((form.password || '') !== (form.confirmPassword || '')) {
             toast.error('Passwords do not match.');
             return;
         }
         try {
+            setLoading(true);
+            const payload = {
+                username: (form.username || '').trim(),
+                email: (form.email || '').trim().toLowerCase(),
+                password: (form.password || '').trim(),
+            };
             const response = await fetch(SummaryApi.signup.url, {
                 method: SummaryApi.signup.method,
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(payload)
             });
 
             const result = await response.json();
 
             if (result.success) {
-                toast.success(result.message);
+                toast.success(result.message || 'Signed up successfully');
                 navigate('/login');
             } else {
-                toast.error(result.message);
+                toast.error(result.message || 'Unable to sign up');
             }
         } catch (error) {
             toast.error('An error occurred during signup.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -48,7 +57,9 @@ const Signup = () => {
                     <div>
                         <label className="block mb-1">Username</label>
                         <input
-                            {...register('username', { required: 'Username is required' })}
+                            autoComplete="username"
+                            maxLength={50}
+                            {...register('username', { required: 'Username is required', minLength: { value: 2, message: 'Username must be at least 2 characters' } })}
                             className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
                         {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
@@ -59,7 +70,12 @@ const Signup = () => {
                         <label className="block mb-1">Email</label>
                         <input
                             type="email"
-                            {...register('email', { required: 'Email is required' })}
+                            autoComplete="email"
+                            maxLength={254}
+                            {...register('email', {
+                                required: 'Email is required',
+                                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' },
+                            })}
                             className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
@@ -71,7 +87,13 @@ const Signup = () => {
                         <div className="relative">
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
+                                autoComplete="new-password"
+                                maxLength={128}
+                                {...register('password', {
+                                    required: 'Password is required',
+                                    minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+                                    validate: (v) => /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(v) || 'Must include at least one letter and one number',
+                                })}
                                 className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                             />
                             <button
@@ -90,6 +112,8 @@ const Signup = () => {
                         <label className="block mb-1">Confirm Password</label>
                         <input
                             type="password"
+                            autoComplete="new-password"
+                            maxLength={128}
                             {...register('confirmPassword', { required: 'Please confirm your password' })}
                             className="w-full p-3 rounded-lg bg-[#31572c] text-[#f8f9fa]"
                         />
@@ -99,9 +123,10 @@ const Signup = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-br from-[#b5e48c] to-[#73a942] cursor-pointer text-[#132a13] px-6 py-2 rounded-lg transition-all duration-200 font-medium"
+                        disabled={loading}
+                        className="w-full bg-gradient-to-br from-[#b5e48c] to-[#73a942] cursor-pointer text-[#132a13] px-6 py-2 rounded-lg transition-all duration-200 font-medium disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                        Sign Up
+                        {loading ? 'Signing up...' : 'Sign Up'}
                     </button>
 
                     {/* Already have an account? */}

@@ -15,7 +15,9 @@ import Signup from './Pages/Signup.jsx';
 import Home from './Pages/Home.jsx';
 import Scan from './Pages/Scan.jsx';
 import Result from './components/Result.jsx';
-
+import HealthProfile from './Pages/HealthProfile.jsx';
+import History from './Pages/History.jsx';
+import ReportDetails from './Pages/ReportDetails.jsx';
 
 const router = createBrowserRouter([
   {
@@ -35,12 +37,24 @@ const router = createBrowserRouter([
         element:<Signup/>
       },
       {
+        path:"health",
+        element:<HealthProfile/>
+      },
+      {
         path:"scan",
         element:<Scan/>
       },
       {
         path:"result",
         element:<Result/>
+      },
+      {
+        path:"history",
+        element:<History/>
+      },
+      {
+        path:"report/:id",
+        element:<ReportDetails/>
       },
       {
         path:"*",

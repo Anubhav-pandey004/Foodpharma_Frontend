@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
+import FancyLoader from './FancyLoader';
 
 const ScanNutrition = ({
   nutritionData,
@@ -101,6 +102,9 @@ const ScanNutrition = ({
             }}
           />
         </div>
+        {sendingPicture && (
+          <FancyLoader show={true} label="Scanning nutrition..." />
+        )}
         <label className="text-sm">
           Select Camera ({devices.length})
           <select

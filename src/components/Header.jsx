@@ -37,7 +37,8 @@ const Header = () => {
   useEffect(() => {
     fetchUserDetails();
   }, []);
-
+  console.log(tempuser);
+  
   return (
     <header
       className="sticky top-6 left-0 right-0 w-[95%] mx-auto rounded-4xl z-50 bg-[#dde5b6] shadow-2xl backdrop-blur-md border-b border-gray-100 "
@@ -63,23 +64,21 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <a
-              href="#features"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
+              onClick={() => {
+              navigater("/");
+            }}
             >
               Dashboard
             </a>
-            <a
-              href="#pricing"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+            <button
+              onClick={() => navigater('/history')}
+              className="text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
+
             >
               History
-            </a>
-            <a
-              href="#testimonials"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Reviews
-            </a>
+            </button>
+ 
             {tempuser != null ? (
               <button
                 onClick={logout}
@@ -122,18 +121,12 @@ const Header = () => {
               >
                 Features
               </a>
-              <a
-                href="#pricing"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+              <button
+                onClick={() => { setIsMenuOpen(false); navigater('/history'); }}
+                className="text-gray-600 hover:text-gray-900 transition-colors text-left"
               >
-                Pricing
-              </a>
-              <a
-                href="#testimonials"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Reviews
-              </a>
+                History
+              </button>
               {tempuser != null ? (
               <button
                 onClick={()=>{

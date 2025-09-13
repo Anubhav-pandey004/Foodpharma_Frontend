@@ -5,6 +5,7 @@ export const AIResponse = async ({
   ingredientsData,
   nutritionData,
   productName,
+  barcode,
   navigate,
 }) => {
   console.log("Sending data to AI backend...", {
@@ -47,6 +48,28 @@ export const AIResponse = async ({
     // After that reset all states to null
 
     if (nutritionData_result.success) {
+      // Save report in history
+      try {
+        const saveResp = await fetch(SummaryApi.reportCreate.url, {
+          method: SummaryApi.reportCreate.method,
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productName,
+            barcode,
+            ingredientsText: ingredientsData,
+            nutritionText: nutritionData,
+            ai: finalResult,
+          }),
+        });
+        const saveJson = await saveResp.json();
+        if (!saveJson?.success) {
+          console.warn('Failed to save report:', saveJson?.message);
+        }
+      } catch (e) {
+        console.warn('Error saving report:', e);
+      }
+
       navigate("/result", { state: finalResult });
       toast.success(
         nutritionData_result.message || "AI processed successfully!"

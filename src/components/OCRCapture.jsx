@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
+import FancyLoader from './FancyLoader';
 
 const OCRCapture = ({
   ingredientScanComplete,
@@ -101,6 +102,10 @@ const OCRCapture = ({
             }}
           />
         </div>
+
+        {sendingPicture && (
+          <FancyLoader show={true} label="Scanning ingredients..." />
+        )}
 
         <label className="text-sm">
           Select Camera ({devices.length})
