@@ -41,7 +41,7 @@ const ScanNutrition = ({
       // If you call abortController.abort(), only fetches using that controller’s signal will be aborted.
       // If you use the same controller for multiple fetches, aborting one will abort all.
       abortControllerRef.current = new AbortController();
-      const res = await fetch(import.meta.env.VITE_OCR_BACKEND_URL, {
+      const res = await fetch("https://ocr-backend-1-3py5.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image }),
