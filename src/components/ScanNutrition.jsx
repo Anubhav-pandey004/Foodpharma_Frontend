@@ -13,7 +13,9 @@ const ScanNutrition = ({
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
-  const ocrurl = import.meta.env.VITE_OCR_BACKEND_URL || "https://ocr-backend-1-3py5.onrender.com";
+  const ocrurl =
+  import.meta.env.VITE_OCR_BACKEND_URL ??
+  "https://ocr-backend-1-3py5.onrender.com/api/ocr/"; // <-- include /api/ocr/
 
   // Fetch available video input devices
   useEffect(() => {
