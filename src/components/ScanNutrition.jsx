@@ -15,7 +15,7 @@ const ScanNutrition = ({
   const abortControllerRef = useRef(null);
   const ocrurl =
   import.meta.env.VITE_OCR_BACKEND_URL ??
-  "https://ocr-backend-r16t.onrender.com/api/ocr/"; // <-- include /api/ocr/
+  "https://ocr-backend-75i0.onrender.com/api/ocr/"; // <-- include /api/ocr/
 
   // Fetch available video input devices
   useEffect(() => {
