@@ -134,7 +134,7 @@ const OCRCapture = ({
           disabled={sendingPicture}
           onClick={()=>{
             setSendingPicture(true);
-            captureAndSend
+            captureAndSend();
           }}
         >
           Take Picture
