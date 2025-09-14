@@ -51,7 +51,7 @@ const OCRCapture = ({
   const sendToOCR = async (base64Image) => {
     try {
       abortControllerRef.current = new AbortController();
-      const res = await fetch(import.meta.env.VITE_OCR_BACKEND_URL, {
+      const res = await fetch("https://ocr-backend-1-3py5.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: base64Image }),
