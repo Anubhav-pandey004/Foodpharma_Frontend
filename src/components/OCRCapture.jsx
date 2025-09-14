@@ -18,7 +18,7 @@ const OCRCapture = ({
   const abortControllerRef = useRef(null);
   const ocrurl =
   import.meta.env.VITE_OCR_BACKEND_URL ??
-  "https://ocr-backend-1-3py5.onrender.com/api/ocr/"; // <-- include /api/ocr/
+  "https://ocr-backend-r16t.onrender.com/api/ocr/"; // <-- include /api/ocr/
 
 
   useEffect(() => {
