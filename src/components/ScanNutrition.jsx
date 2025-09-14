@@ -13,6 +13,7 @@ const ScanNutrition = ({
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
+  const ocrurl = "https://ocr-backend-1-3py5.onrender.com";
 
   // Fetch available video input devices
   useEffect(() => {
@@ -41,7 +42,7 @@ const ScanNutrition = ({
       // If you call abortController.abort(), only fetches using that controller’s signal will be aborted.
       // If you use the same controller for multiple fetches, aborting one will abort all.
       abortControllerRef.current = new AbortController();
-      const res = await fetch("https://ocr-backend-1-3py5.onrender.com", {
+      const res = await fetch(ocrurl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image }),
