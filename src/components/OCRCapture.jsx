@@ -50,6 +50,7 @@ const OCRCapture = ({
   };
 
   const sendToOCR = async (base64Image) => {
+    console.log(ocrurl);
     try {
       abortControllerRef.current = new AbortController();
       const res = await fetch(ocrurl, {
