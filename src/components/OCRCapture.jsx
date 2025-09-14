@@ -16,7 +16,7 @@ const OCRCapture = ({
   const [scanNutrition, setScanNutrition] = useState(false);
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
-  const ocrurl = "https://ocr-backend-1-3py5.onrender.com";
+  const ocrurl = import.meta.env.VITE_BACKEND_URL || "https://ocr-backend-1-3py5.onrender.com";
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((allDevices) => {
