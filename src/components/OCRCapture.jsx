@@ -16,6 +16,7 @@ const OCRCapture = ({
   const [scanNutrition, setScanNutrition] = useState(false);
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
+  const ocrurl = "https://ocr-backend-1-3py5.onrender.com";
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((allDevices) => {
@@ -51,7 +52,7 @@ const OCRCapture = ({
   const sendToOCR = async (base64Image) => {
     try {
       abortControllerRef.current = new AbortController();
-      const res = await fetch("https://ocr-backend-1-3py5.onrender.com", {
+      const res = await fetch(ocrurl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: base64Image }),
