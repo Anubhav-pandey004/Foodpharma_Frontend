@@ -62,19 +62,7 @@ const OCRCapture = ({
         body: JSON.stringify({ image: base64Image }),
         signal: abortControllerRef.current.signal,
       });
-      try {
-  const test_case = await fetch("https://ocr-backend-75i0.onrender.com", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    signal: abortControllerRef.current.signal,
-  });
 
-  console.log("Testing...", test_case);
-} catch (error) {
-  console.error("Fetch failed:", error);
-}
       const data = await res.json();
       setIngredientsData(data.text);
       setSendingPicture(false);
@@ -87,9 +75,23 @@ const OCRCapture = ({
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
+              try {
+  const test_case = await fetch("https://ocr-backend-75i0.onrender.com", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    signal: abortControllerRef.current.signal,
+  });
+
+  console.log("Testing...", test_case);
+} catch (error) {
+  console.error("Fetch failed:", error);
+}
       }
     }
   };
+  
 
   const handleClose = () => {
     if (abortControllerRef.current) {
