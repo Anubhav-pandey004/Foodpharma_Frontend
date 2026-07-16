@@ -1,11 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import FancyLoader from './FancyLoader';
+import { toast } from "react-toastify";
+import FancyLoader from "./FancyLoader";
+import { extractTextFromImage } from "../helper/ocr";
 
 const OCRCapture = ({
   ingredientScanComplete,
   setIngredientScanComplete,
-  ingredientsData,
   setIngredientsData,
   nutritionScanComplete,
   setNutritionScanComplete,
@@ -13,13 +14,8 @@ const OCRCapture = ({
   const webcamRef = useRef(null);
   const [devices, setDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
-  const [scanNutrition, setScanNutrition] = useState(false);
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
-  const ocrurl =
-  import.meta.env.VITE_OCR_BACKEND_URL ??
-  "https://ocr-backend-75i0.onrender.com/api/ocr/"; // <-- include /api/ocr/
-
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((allDevices) => {
@@ -43,6 +39,8 @@ const OCRCapture = ({
   };
 
   const handleUpload = (file) => {
+    if (!file) return;
+
     setSendingPicture(true);
     const reader = new FileReader();
     reader.onload = async (ev) => {
@@ -53,20 +51,14 @@ const OCRCapture = ({
   };
 
   const sendToOCR = async (base64Image) => {
-    console.log(ocrurl);
     try {
       abortControllerRef.current = new AbortController();
-      const res = await fetch(ocrurl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: base64Image }),
-        signal: abortControllerRef.current.signal,
-      });
+      const text = await extractTextFromImage(
+        base64Image,
+        abortControllerRef.current.signal,
+      );
 
-      const data = await res.json();
-      setIngredientsData(data.text);
-      setSendingPicture(false);
-      setScanNutrition(true);
+      setIngredientsData(text);
       stopWebcam();
       setNutritionScanComplete(!nutritionScanComplete);
       setIngredientScanComplete(!ingredientScanComplete);
@@ -75,20 +67,10 @@ const OCRCapture = ({
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
-              try {
-  const test_case = await fetch("https://ocr-backend-75i0.onrender.com", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    signal: abortControllerRef.current.signal,
-  });
-
-  console.log("Testing...", test_case);
-} catch (error) {
-  console.error("Fetch failed:", error);
-}
+        toast.error(error.message || "OCR failed. Please try again.");
       }
+    } finally {
+      setSendingPicture(false);
     }
   };
   
