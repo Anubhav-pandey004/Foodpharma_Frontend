@@ -27,48 +27,68 @@ const OCRCapture = ({
     });
   }, []);
 
-  const stopWebcam = () => {
-    if (webcamRef.current && webcamRef.current.stream) {
-      webcamRef.current.stream.getTracks().forEach((track) => track.stop());
-    }
-  };
+const stopWebcam = () => {
+  const video = webcamRef.current?.video;
+  if (video?.srcObject) {
+    video.srcObject.getTracks().forEach((track) => track.stop());
+  }
+};
 
-  const captureAndSend = async () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    await sendToOCR(imageSrc);
-  };
+const captureAndSend = async () => {
+  const imageSrc = webcamRef.current?.getScreenshot();
+
+  if (!imageSrc) {
+    toast.error("Unable to capture image.");
+    return;
+  }
+
+  await sendToOCR(imageSrc);
+};
 
   const handleUpload = (file) => {
-    if (!file) return;
+  if (!file) return;
 
-    setSendingPicture(true);
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-      const base64Image = ev.target.result;
-      await sendToOCR(base64Image);
-    };
-    reader.readAsDataURL(file);
+  setSendingPicture(true);
+
+  const reader = new FileReader();
+
+  reader.onload = async (e) => {
+    await sendToOCR(e.target.result);
   };
 
-  const sendToOCR = async (base64Image) => {
-    try {
-      abortControllerRef.current = new AbortController();
-      const text = await extractTextFromImage(
-        base64Image,
-        abortControllerRef.current.signal,
-      );
+  reader.onerror = () => {
+    toast.error("Failed to read image.");
+    setSendingPicture(false);
+  };
 
-      setIngredientsData(text);
-      stopWebcam();
-      setNutritionScanComplete(!nutritionScanComplete);
-      setIngredientScanComplete(!ingredientScanComplete);
+  reader.readAsDataURL(file);
+};
+
+  const sendToOCR = async (base64Image) => {
+  try {
+    abortControllerRef.current = new AbortController();
+
+    const text = await extractTextFromImage(
+      base64Image,
+      abortControllerRef.current.signal
+    );
+
+    setIngredientsData(text);
+
+    stopWebcam();
+
+    setNutritionScanComplete(!nutritionScanComplete);
+    setIngredientScanComplete(!ingredientScanComplete);
     } catch (error) {
       if (error.name === "AbortError") {
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
+      }
+    } finally {
+      setSendingPicture(false);
     }
-  };
+};
   
 
   const handleClose = () => {
@@ -125,10 +145,10 @@ const OCRCapture = ({
             sendingPicture ? " opacity-60 pointer-events-none" : ""
           }`}
           disabled={sendingPicture}
-          onClick={()=>{
-            setSendingPicture(true);
-            captureAndSend();
-          }}
+          onClick={async () => {
+  setSendingPicture(true);
+  await captureAndSend();
+}}
         >
           Take Picture
         </button>
