@@ -75,20 +75,6 @@ const OCRCapture = ({
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
-              try {
-  const test_case = await fetch("https://ocr-backend-75i0.onrender.com", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    signal: abortControllerRef.current.signal,
-  });
-
-  console.log("Testing...", test_case);
-} catch (error) {
-  console.error("Fetch failed:", error);
-}
-      }
     }
   };
   
