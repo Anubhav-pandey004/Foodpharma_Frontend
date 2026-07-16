@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import FancyLoader from './FancyLoader';
+import { toast } from "react-toastify";
+import FancyLoader from "./FancyLoader";
+import { extractTextFromImage } from "../helper/ocr";
 
 const ScanNutrition = ({
-  nutritionData,
   setNutritionData,
   nutritionScanComplete,
   setNutritionScanComplete,
@@ -13,9 +14,6 @@ const ScanNutrition = ({
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [sendingPicture, setSendingPicture] = useState(false);
   const abortControllerRef = useRef(null);
-  const ocrurl =
-  import.meta.env.VITE_OCR_BACKEND_URL ??
-  "https://ocr-backend-75i0.onrender.com/api/ocr/"; // <-- include /api/ocr/
 
   // Fetch available video input devices
   useEffect(() => {
@@ -38,34 +36,30 @@ const ScanNutrition = ({
   const captureAndSend = async (base64Image) => {
     const image = base64Image || webcamRef.current.getScreenshot();
     try {
-      //Is it linked with that fetch request only?
-      // Yes!
-      // When you pass signal: abortController.signal to a fetch, that fetch is "linked" to that specific controller.
-      // If you call abortController.abort(), only fetches using that controller’s signal will be aborted.
-      // If you use the same controller for multiple fetches, aborting one will abort all.
       abortControllerRef.current = new AbortController();
-      const res = await fetch(ocrurl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image }),
-        signal: abortControllerRef.current.signal,
-      });
-      const data = await res.json();
-      setNutritionData(data.text);
+      const text = await extractTextFromImage(
+        image,
+        abortControllerRef.current.signal,
+      );
+
+      setNutritionData(text);
       setNutritionScanComplete(!nutritionScanComplete);
-      stopWebcam(); // Stop camera after capture
-      setSendingPicture(false);
+      stopWebcam();
     } catch (error) {
       if (error.name === "AbortError") {
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
+        toast.error(error.message || "OCR failed. Please try again.");
       }
+    } finally {
       setSendingPicture(false);
     }
   };
 
   const handleUpload = (file) => {
+    if (!file) return;
+
     setSendingPicture(true);
     const reader = new FileReader();
     reader.onload = async (ev) => {
