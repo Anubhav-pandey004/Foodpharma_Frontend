@@ -67,10 +67,6 @@ const OCRCapture = ({
         console.log("OCR request aborted");
       } else {
         console.error("OCR failed:", error);
-        toast.error(error.message || "OCR failed. Please try again.");
-      }
-    } finally {
-      setSendingPicture(false);
     }
   };
   
